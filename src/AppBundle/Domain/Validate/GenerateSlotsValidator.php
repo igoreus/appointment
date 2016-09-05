@@ -32,7 +32,7 @@ class GenerateSlotsValidator implements Validator
     {
         $this->errors = [];
         if (!($bookAppointment instanceof GenerateSlots)) {
-            throw new \LogicException('Command must be instance of AppBundle\Domain\Command\GenerateSlots\GenerateSlots');
+            throw new \LogicException('Command must be instance of AppBundle\Domain\Command\GenerateSlots');
         }
 
         if ($this->repository->existingForDate($bookAppointment->getDatetime())) {
@@ -53,7 +53,6 @@ class GenerateSlotsValidator implements Validator
         if ($bookAppointment->getInterval() <= 0 || $bookAppointment->getInterval() > 60) {
             $this->errors[] = sprintf(self::WRONG_INTERVAL, $bookAppointment->getInterval());
         }
-
 
         return empty($this->errors);
     }

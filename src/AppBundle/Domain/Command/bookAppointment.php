@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Domain\Command;
 
 use AppBundle\Domain\Validate\BookValidator;

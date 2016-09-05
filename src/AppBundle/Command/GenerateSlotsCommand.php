@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Command;
 
 use AppBundle\Domain\Service\AppointmentService as DomainAppointmentService;
@@ -18,8 +19,8 @@ class GenerateSlotsCommand extends ContainerAwareCommand
         $this->setName('app:generate-slots')
             ->setDescription('Generates time slots for given data and interval')
             ->addArgument('date', InputArgument::REQUIRED, 'Date in ISO-8601 format')
-            ->addArgument('from-time', InputArgument::OPTIONAL, 'From Time, format: h:i. Default: 08:00', '08:00')
-            ->addArgument('till-time', InputArgument::OPTIONAL, 'Till Time, format: h:i. Default: 18:00', '18:00')
+            ->addArgument('from-time', InputArgument::OPTIONAL, 'From Time, format: H:i. Default: 08:00', '08:00')
+            ->addArgument('till-time', InputArgument::OPTIONAL, 'Till Time, format: H:i. Default: 18:00', '18:00')
             ->addArgument('interval', InputArgument::OPTIONAL, 'Interval in minutes eg. 15. Default: 60', '60');
     }
 

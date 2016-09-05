@@ -5,6 +5,7 @@ namespace AppBundle\Domain\Validate;
 use AppBundle\Domain\Command\bookAppointment;
 use AppBundle\Domain\Command\Command;
 use AppBundle\Domain\Repository\AppointmentRepository;
+use AppBundle\Domain\Repository\NoResultException;
 
 class BookValidator implements Validator
 {
@@ -13,7 +14,6 @@ class BookValidator implements Validator
     const WRONG_FROM_TIME = 'From time [%s] has wrong format';
     const WRONG_TILL_TIME = 'Till time [%s] has wrong format';
     const WRONG_INTERVAL = 'Interval [%s] is wrong';
-
 
     /** @var AppointmentRepository */
     private $repository;
@@ -38,7 +38,8 @@ class BookValidator implements Validator
         }
         try {
             $entity = $this->repository->getById($bookAppointment->getId());
-        } catch (\Exception $e) {
+
+        } catch (NoResultException $e) {
             $this->errors[] = sprintf(self::NO_FOUND, $bookAppointment->getId());
             return false;
         }
@@ -57,5 +58,4 @@ class BookValidator implements Validator
     {
         return $this->errors;
     }
-
 }

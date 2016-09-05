@@ -7,17 +7,14 @@ use AppBundle\Domain\Model\Appointment;
 use AppBundle\Domain\Command\GenerateSlots;
 use AppBundle\Domain\Model\AppointmentSet;
 use AppBundle\Domain\Repository\AppointmentRepository;
-use AppBundle\Domain\Validate\Validator;
 
 class AppointmentService
 {
     /** @var AppointmentRepository */
     private $repository;
 
-
     /**
      * @param AppointmentRepository $repository
-     * @param Validator $validator
      */
     public function __construct(AppointmentRepository $repository)
     {
@@ -34,7 +31,7 @@ class AppointmentService
     }
 
     /**
-     * @param \DateTime $dateTime
+     * @param int $id
      * @return Appointment
      */
     public function getById($id)
@@ -64,7 +61,6 @@ class AppointmentService
             $generateSlots->getTillTimeMinutes()
         );
 
-
         do {
             $appointmentSet->addAppointment(
                 Appointment::createNew($fromTime)
@@ -74,7 +70,6 @@ class AppointmentService
         } while ($fromTime <= $tillTime);
 
         return $this->repository->persistAppointmentSet($appointmentSet);
-
     }
 
     /**
@@ -90,9 +85,9 @@ class AppointmentService
         $appointment = $this->repository->getAndAcquireLock($bookAppointment->getId());
 
         $appointment->setIsBooked(true);
+        $appointment->setIsLocked(false);
         $appointment->setClientName($bookAppointment->getClientName());
+
         return $this->repository->mergeAppointment($appointment);
-
-
     }
 }

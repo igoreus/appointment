@@ -17,6 +17,7 @@ use FOS\RestBundle;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\HttpFoundation\Response;
+use \AppBundle\Repository\AppointmentRepository;
 
 class AppointmentController extends FOSRestController
 {
@@ -26,6 +27,7 @@ class AppointmentController extends FOSRestController
     public function GetListAction(Request $request)
     {
         $service = new AppointmentService(new DomainAppointmentService($this->getAppointmentRepository()));
+
         try {
             $appointmentSet = $service->getAppointmentList($request->get('date'));
             $outputArray = (new AppointmentListOutput())->toArray($appointmentSet);
@@ -48,6 +50,7 @@ class AppointmentController extends FOSRestController
     public function GetAction(Request $request)
     {
         $service = new AppointmentService(new DomainAppointmentService($this->getAppointmentRepository()));
+
         try {
             $appointment = $service->getAppointment($request->get('id'));
             $outputArray = (new AppointmentOutput())->toArray($appointment);
@@ -68,13 +71,13 @@ class AppointmentController extends FOSRestController
      * @Rest\PUT("/api/v1/appointment/book")
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
-     *
      * @RequestParam(name="id", nullable=false, strict=true, description="id")
      * @RequestParam(name="client_name", nullable=false, strict=true, description="Client Name")
      */
     public function PutBookAction(ParamFetcher $paramFetcher)
     {
         $service = new AppointmentService(new DomainAppointmentService($this->getAppointmentRepository()));
+
         try {
             $service->bookAppointment(
                 new BookValidator($this->getAppointmentRepository()),
@@ -100,7 +103,7 @@ class AppointmentController extends FOSRestController
     private function getAppointmentRepository()
     {
         $em = $this->getDoctrine()->getManager();
-        $repository = new \AppBundle\Repository\AppointmentRepository($em, new ClassMetadata('AppBundle:Appointment'));
+        $repository = new AppointmentRepository($em, new ClassMetadata('AppBundle:Appointment'));
 
         return $repository;
     }

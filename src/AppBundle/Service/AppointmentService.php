@@ -19,7 +19,6 @@ class AppointmentService
     public function __construct(DomainAppointmentService $service)
     {
         $this->service = $service;
-
     }
 
     /**
@@ -32,7 +31,7 @@ class AppointmentService
     }
 
     /**
-     * @param $dateTime
+     * @param $id
      * @return \AppBundle\Domain\Model\Appointment
      */
     public function getAppointment($id)
@@ -45,8 +44,9 @@ class AppointmentService
      * @param string $dateTime
      * @param string $fromTime
      * @param string $tillTime
-     * @param int $interval
+     * @param string $interval
      * @return bool
+     * @throws \Exception
      */
     public function generateSlots(GenerateSlotsValidator $validator, $dateTime, $fromTime, $tillTime, $interval)
     {
@@ -65,6 +65,7 @@ class AppointmentService
      * @param int $id
      * @param string $clientName
      * @return bool
+     * @throws \Exception
      */
     public function bookAppointment(BookValidator $validator, $id, $clientName)
     {

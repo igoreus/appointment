@@ -4,12 +4,9 @@ namespace AppBundle\Repository;
 
 use AppBundle\Domain\Model\Appointment as AppointmentModel;
 use AppBundle\Domain\Model\AppointmentSet;
-
 use AppBundle\Entity\AppointmentFactory;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
-
-
 use AppBundle\Domain\Repository\AppointmentRepository as AppointmentRepositoryInterface;
 use AppBundle\Domain\Repository\NoResultException;
 
@@ -18,8 +15,7 @@ class AppointmentRepository extends EntityRepository implements AppointmentRepos
 {
 
     /**
-     * @param AppointmentSet $appointmentSet
-     * @return bool
+     * @inheritdoc
      */
     public function persistAppointmentSet(AppointmentSet $appointmentSet)
     {
@@ -35,8 +31,7 @@ class AppointmentRepository extends EntityRepository implements AppointmentRepos
     }
 
     /**
-     * @param AppointmentModel $appointment
-     * @return bool
+     * @inheritdoc
      */
     public function mergeAppointment(AppointmentModel $appointment)
     {
@@ -117,7 +112,7 @@ class AppointmentRepository extends EntityRepository implements AppointmentRepos
             ->where('a.id = :id')
             ->andWhere('a.isLocked = 0')
             ->andWhere('a.isBooked = 0')
-            ->setParameter('id', $id)
+            ->setParameter('id', (int) $id)
             ->getQuery();
 
         $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
@@ -128,7 +123,7 @@ class AppointmentRepository extends EntityRepository implements AppointmentRepos
             $em->getConnection()->rollBack();
             throw new NoResultException();
         }
-        $entity->setIslocked(1);
+        $entity->setIslocked(true);
         $this->getEntityManager()->merge($entity);
         $this->getEntityManager()->flush();
 
