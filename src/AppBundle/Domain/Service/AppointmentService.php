@@ -2,7 +2,7 @@
 
 namespace AppBundle\Domain\Service;
 
-use AppBundle\Domain\Command\bookAppointment;
+use AppBundle\Domain\Command\BookAppointment;
 use AppBundle\Domain\Model\Appointment;
 use AppBundle\Domain\Command\GenerateSlots;
 use AppBundle\Domain\Model\AppointmentSet;
@@ -73,10 +73,10 @@ class AppointmentService
     }
 
     /**
-     * @param bookAppointment $bookAppointment
+     * @param BookAppointment $bookAppointment
      * @return bool
      */
-    public function bookAppointment(bookAppointment $bookAppointment)
+    public function bookAppointment(BookAppointment $bookAppointment)
     {
         if (!$bookAppointment->isValid()) {
             return false;

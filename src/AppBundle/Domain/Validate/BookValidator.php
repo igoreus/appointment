@@ -2,10 +2,10 @@
 
 namespace AppBundle\Domain\Validate;
 
-use AppBundle\Domain\Command\bookAppointment;
+use AppBundle\Domain\Command\BookAppointment;
 use AppBundle\Domain\Command\Command;
 use AppBundle\Domain\Repository\AppointmentRepository;
-use AppBundle\Domain\Repository\NoResultException;
+use AppBundle\Domain\Repository\EmptyResultException;
 
 class BookValidator implements Validator
 {
@@ -33,18 +33,18 @@ class BookValidator implements Validator
     public function isValid(Command $bookAppointment)
     {
         $this->errors = [];
-        if (!($bookAppointment instanceof bookAppointment)) {
+        if (!($bookAppointment instanceof BookAppointment)) {
             throw new \LogicException('Command must be instance of AppBundle\Domain\Command\bookAppointment');
         }
         try {
-            $entity = $this->repository->getById($bookAppointment->getId());
+            $appointment = $this->repository->getById($bookAppointment->getId());
 
-        } catch (NoResultException $e) {
+        } catch (EmptyResultException $e) {
             $this->errors[] = sprintf(self::NO_FOUND, $bookAppointment->getId());
             return false;
         }
 
-        if ($entity->getIsBooked() || $entity->getIsLocked()) {
+        if ($appointment->getIsBooked() || $appointment->getIsLocked()) {
             $this->errors[] = sprintf(self::ALREADY_BOOKED, $bookAppointment->getId());
         }
 

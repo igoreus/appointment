@@ -28,30 +28,30 @@ class GenerateSlotsValidator implements Validator
     /**
      * @inheritdoc
      */
-    public function isValid(Command $bookAppointment)
+    public function isValid(Command $generateSlots)
     {
         $this->errors = [];
-        if (!($bookAppointment instanceof GenerateSlots)) {
+        if (!($generateSlots instanceof GenerateSlots)) {
             throw new \LogicException('Command must be instance of AppBundle\Domain\Command\GenerateSlots');
         }
 
-        if ($this->repository->existingForDate($bookAppointment->getDatetime())) {
-            $this->errors[] = sprintf(self::ALREADY_EXISTS, $bookAppointment->getDatetime()->format('Y-d-m'));
+        if ($this->repository->existingForDate($generateSlots->getDatetime())) {
+            $this->errors[] = sprintf(self::ALREADY_EXISTS, $generateSlots->getDatetime()->format('Y-d-m'));
         }
 
-        $this->validateTime('from_time', $bookAppointment->getFromTime());
-        $this->validateTime('till_time', $bookAppointment->getTillTime());
+        $this->validateTime('from_time', $generateSlots->getFromTime());
+        $this->validateTime('till_time', $generateSlots->getTillTime());
 
-        if ($bookAppointment->getFromTime() >= $bookAppointment->getTillTime()) {
+        if ($generateSlots->getFromTime() >= $generateSlots->getTillTime()) {
             $this->errors[] = sprintf(
                 self::TILL_TIME_LESS_THAN_FROM_TIME,
-                $bookAppointment->getFromTime(),
-                $bookAppointment->getTillTime()
+                $generateSlots->getFromTime(),
+                $generateSlots->getTillTime()
             );
         }
 
-        if ($bookAppointment->getInterval() <= 0 || $bookAppointment->getInterval() > 60) {
-            $this->errors[] = sprintf(self::WRONG_INTERVAL, $bookAppointment->getInterval());
+        if ($generateSlots->getInterval() <= 0 || $generateSlots->getInterval() > 60) {
+            $this->errors[] = sprintf(self::WRONG_INTERVAL, $generateSlots->getInterval());
         }
 
         return empty($this->errors);

@@ -35,7 +35,7 @@ interface AppointmentRepository
      * @param int $id
      * @return Appointment
      *
-     * @Exception \Exception
+     * @Exception EmptyResultException
      */
     public function getById($id);
 

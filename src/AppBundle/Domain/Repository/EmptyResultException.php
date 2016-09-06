@@ -3,7 +3,7 @@
 namespace AppBundle\Domain\Repository;
 
 
-class NoResultException extends \Exception
+class EmptyResultException extends \Exception
 {
     public function __construct()
     {

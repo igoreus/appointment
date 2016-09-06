@@ -4,7 +4,7 @@ namespace AppBundle\Domain\Command;
 
 use AppBundle\Domain\Validate\BookValidator;
 
-class bookAppointment extends AbstractCommand
+class BookAppointment extends AbstractCommand
 {
     /** @var int */
     private $id;

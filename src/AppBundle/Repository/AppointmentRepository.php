@@ -8,7 +8,7 @@ use AppBundle\Entity\AppointmentFactory;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Domain\Repository\AppointmentRepository as AppointmentRepositoryInterface;
-use AppBundle\Domain\Repository\NoResultException;
+use AppBundle\Domain\Repository\EmptyResultException;
 
 
 class AppointmentRepository extends EntityRepository implements AppointmentRepositoryInterface
@@ -93,7 +93,7 @@ class AppointmentRepository extends EntityRepository implements AppointmentRepos
         $entity = $em->find('AppBundle\Entity\Appointment', $id);
 
         if (empty($entity)) {
-            throw new NoResultException();
+            throw new EmptyResultException();
         }
 
         return AppointmentFactory::fromEntityToAppointment($entity);
@@ -121,7 +121,7 @@ class AppointmentRepository extends EntityRepository implements AppointmentRepos
 
         if (empty($entity)) {
             $em->getConnection()->rollBack();
-            throw new NoResultException();
+            throw new EmptyResultException();
         }
         $entity->setIslocked(true);
         $this->getEntityManager()->merge($entity);

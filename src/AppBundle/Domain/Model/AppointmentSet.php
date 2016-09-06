@@ -63,5 +63,13 @@ class AppointmentSet implements \Iterator, \Countable
         return count($this->appointmentList);
     }
 
+    /**
+     * @return Appointment[]
+     */
+    public function getAppointmentList()
+    {
+        return $this->appointmentList;
+    }
+
 
 }

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Domain\Command\bookAppointment;
+use AppBundle\Domain\Command\BookAppointment;
 use AppBundle\Domain\Command\GenerateSlots;
 use AppBundle\Domain\Service\AppointmentService as DomainAppointmentService;
 use AppBundle\Domain\Validate\BookValidator;
@@ -69,7 +69,7 @@ class AppointmentService
      */
     public function bookAppointment(BookValidator $validator, $id, $clientName)
     {
-        $command = new bookAppointment($validator, $id, $clientName);
+        $command = new BookAppointment($validator, $id, $clientName);
         $result = $this->service->bookAppointment($command);
 
         if ($result == false) {
